@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JAY-TECH | Professional Services</title>
+  
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --primary: #3498db;
+      --accent: #2ecc71;
+      --bg-dark: #0a192f;
+      --card-dark: rgba(255, 255, 255, 0.08);
+      --glass: rgba(255, 255, 255, 0.1);
+      --glass-border: rgba(255, 255, 255, 0.15);
+    }
+
+    * { box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top right, #1e3a8a, #0a192f);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      margin: 0;
+      transition: all 0.4s ease;
+    }
+
+    body.light { background: #f8fafc; color: #1e293b; }
+
+   .app {
+      width: 100%;
+      /* Default for Mobile: Tall Rectangle */
+      max-width: 380px; 
+      min-height: 85vh; /* Makes it look like a long phone screen */
+      
+      background: var(--glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: 32px;
+      padding: 24px 24px 80px 24px;
+      position: relative;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Desktop/Computer Specific Styling */
+    @media (min-width: 768px) {
+      .app {
+        max-width: 600px; /* Wider for desktop */
+        min-height: 600px; /* Equal height to width for a square look */
+        padding: 40px;
+      }
+      
+      .grid {
+        grid-template-columns: repeat(3, 1fr); /* Keeps 3 icons across */
+        gap: 25px; /* Spreads icons out more on big screens */
+      }
+
+      .card {
+        padding: 30px 10px; /* Larger buttons on desktop */
+        font-size: 14px;
+      }
+    }
+    .top { display: flex; gap: 12px; align-items: center; margin-bottom: 20px; }
+    
+    .menu {
+      width: 42px; height: 42px; 
+      display: flex; justify-content: center; align-items: center; 
+      cursor: pointer; transition: 0.3s;
+      background: var(--glass); border-radius: 12px; border: 1px solid var(--glass-border);
+    }
+    .menu:active { transform: scale(0.9); }
+
+    .search { 
+      flex: 1; padding: 12px 18px; border-radius: 14px; border: 1px solid var(--glass-border); 
+      background: var(--glass); color: #fff; outline: none;
+    }
+
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+
+    .card {
+      background: var(--card-dark);
+      border-radius: 20px;
+      padding: 18px 5px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      border: 1px solid var(--glass-border);
+    }
+    .card i { width: 22px; height: 22px; stroke-width: 1.8px; transition: transform 0.3s ease; }
+    
+    .card:hover { 
+      transform: translateY(-5px); 
+      background: rgba(255, 255, 255, 0.15); 
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+    .card:active { transform: scale(0.92); background: var(--primary); color: white; }
+
+    .services-list { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
+    
+    .service-btn {
+      display: flex; align-items: center; gap: 15px; padding: 14px;
+      background: #ffffff; border-radius: 16px; border: 1px solid #edf2f7;
+      cursor: pointer; transition: all 0.2s ease; text-align: left; width: 100%;
+      color: #2d3748; font-weight: 600; font-size: 14px; text-decoration: none;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+    .service-btn i { 
+      background: #ebf8ff; padding: 8px; border-radius: 10px; 
+      color: var(--primary); width: 36px; height: 36px; 
+    }
+    .service-btn:hover { background: #f7fafc; transform: translateX(8px); border-color: var(--primary); }
+    .service-btn:active { transform: scale(0.98); background: #ebf8ff; }
+
+    .overlay {
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.4);
+      display: none; justify-content: center; align-items: center;
+      z-index: 1000; backdrop-filter: blur(8px);
+    }
+    .overlay.active { display: flex; }
+    .modal {
+      background: rgba(255, 255, 255, 0.98); color: #1e293b; 
+      width: 92%; max-width: 350px;
+      border-radius: 28px; padding: 24px; 
+      max-height: 80vh; overflow-y: auto;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+
+    .bottom-nav {
+      position: absolute; bottom: 0; left: 0; width: 100%;
+      background: rgba(10, 25, 47, 0.6); backdrop-filter: blur(20px);
+      display: flex; justify-content: space-around; padding: 15px 0 25px 0;
+      border-radius: 0 0 32px 32px; border-top: 1px solid var(--glass-border);
+    }
+    .nav-item { font-size: 11px; text-align: center; color: #8fa0b0; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: 0.2s; }
+    .nav-item.active { color: var(--primary); font-weight: 600; }
+
+    .btn-process {
+        width: 100%; padding: 16px; 
+        background: linear-gradient(135deg, #0f172a, #1e293b); 
+        color: white; border: none; border-radius: 14px; margin-top: 12px; 
+        font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+        cursor: pointer; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3); transition: all 0.2s;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app">
+    <div class="top">
+      <div class="menu" onclick="openModal('menuOverlay')"><i data-lucide="layout-grid"></i></div>
+      <input class="search" placeholder="Search services..." oninput="searchCards(this.value)">
+    </div>
+
+    <h1 style="text-align:center; letter-spacing:6px; margin: 20px 0; font-size: 18px; font-weight: 800;">JAY-TECH</h1>
+
+    <div class="grid" id="cardGrid">
+      <div class="card" onclick="cardAction('Graphics')"><i data-lucide="palette"></i>Graphics</div>
+      <div class="card" onclick="cardAction('Logos')"><i data-lucide="pen-tool"></i>Logos</div>
+      <div class="card" onclick="cardAction('Web Dev')"><i data-lucide="code-2"></i>Web Dev</div>
+      <div class="card" onclick="cardAction('Recovery')"><i data-lucide="refresh-cw"></i>Recovery</div>
+      <div class="card" onclick="cardAction('App Dev')"><i data-lucide="layout"></i>App Dev</div>
+      <div class="card" onclick="openModal('financeOverlay')"><i data-lucide="wallet"></i>Ledger</div>
+    </div>
+
+    <div class="bottom-nav">
+      <div class="nav-item active" onclick="setActiveNav(this, 'home')"><i data-lucide="home"></i>Home</div>
+      <div class="nav-item" onclick="setActiveNav(this, 'services')"><i data-lucide="layers"></i>Services</div>
+    </div>
+  </div>
+
+  <div class="overlay" id="servicesOverlay" onclick="closeOverlay(event)">
+    <div class="modal">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="margin:0;">Specialized Services</h3>
+        <i data-lucide="x" onclick="document.getElementById('servicesOverlay').classList.remove('active')" style="cursor:pointer;"></i>
+      </div>
+      <div class="services-list">
+        <div class="service-btn" onclick="cardAction('Watch Sports')"><i data-lucide="trophy"></i> Watch Sports</div>
+        <div class="service-btn" onclick="cardAction('Watch Movies')"><i data-lucide="clapperboard"></i> Watch Movies & Series</div>
+        <div class="service-btn" onclick="cardAction('Stream Music')"><i data-lucide="music"></i> Stream Music Free</div>
+        <div class="service-btn" onclick="cardAction('Download Games')"><i data-lucide="gamepad-2"></i> Download Games</div>
+        <div class="service-btn" onclick="cardAction('Download Books')"><i data-lucide="book-open"></i> Download Books</div>
+        <div class="service-btn" onclick="openModal('socialOverlay')"><i data-lucide="share-2"></i> Social Media Lab</div>
+        <div class="service-btn support" onclick="openModal('supportOverlay')" style="border-left: 4px solid var(--primary);"><i data-lucide="headset"></i> Contact Support</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="socialOverlay" onclick="closeOverlay(event)">
+    <div class="modal">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="margin:0;">Social Media Lab</h3>
+        <i data-lucide="chevron-left" onclick="openModal('servicesOverlay')" style="cursor:pointer;"></i>
+      </div>
+      <div class="services-list">
+        <div class="service-btn" onclick="cardAction('WhatsApp Unbanning')"><i data-lucide="user-x"></i> WhatsApp Unbanning</div>
+        <div class="service-btn" onclick="cardAction('Account Recovery')"><i data-lucide="key-round"></i> Account Retrieval</div>
+        <div class="service-btn" onclick="cardAction('Security Boosting')"><i data-lucide="shield-check"></i> Security Boosting</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="supportOverlay" onclick="closeOverlay(event)">
+    <div class="modal">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+          <h3 style="margin:0;">Support Center</h3>
+          <i data-lucide="x" onclick="document.getElementById('supportOverlay').classList.remove('active')" style="cursor:pointer;"></i>
+      </div>
+      <div class="services-list">
+        <div class="service-btn" onclick="cardAction('Email')"><i data-lucide="mail"></i> Email Support</div>
+        <div class="service-btn" onclick="cardAction('WhatsApp')"><i data-lucide="phone"></i> WhatsApp Business</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="menuOverlay" onclick="closeOverlay(event)">
+    <div class="modal">
+      <h3>Settings</h3>
+      <div class="services-list">
+          <div class="service-btn" onclick="document.getElementById('themeToggle').click()">
+              <i data-lucide="moon"></i> Light Mode <input type="checkbox" id="themeToggle" style="margin-left:auto;">
+          </div>
+          <div class="service-btn" onclick="openModal('supportOverlay')"><i data-lucide="help-circle"></i> Help & FAQ</div>
+      </div>
+      <button class="btn-process" onclick="document.getElementById('menuOverlay').classList.remove('active')">Close</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="financeOverlay" onclick="closeOverlay(event)">
+    <div class="modal">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+          <h3 style="margin:0;">Business Ledger</h3>
+          <i data-lucide="x" onclick="document.getElementById('financeOverlay').classList.remove('active')" style="cursor:pointer;"></i>
+      </div>
+      <div id="balanceBox" style="background:linear-gradient(135deg, #059669, #10b981); color:white; padding:20px; border-radius:18px; text-align:center; margin-bottom:20px;">
+        <small style="opacity:0.8; text-transform:uppercase; font-size:10px;">Current Wealth</small><br>
+        <strong style="font-size:28px;">$<span id="totalDisplay">0.00</span></strong>
+      </div>
+      <input type="number" id="finAmount" placeholder="0.00" style="width:100%; padding:14px; border:1px solid #ddd; border-radius:12px;">
+      <select id="finType" style="width:100%; padding:14px; border:1px solid #ddd; border-radius:12px; margin-top:10px;">
+        <option value="income">Credit (+)</option>
+        <option value="expense">Debit (-)</option>
+      </select>
+      <button class="btn-process" onclick="addTransaction()">Process Transaction</button>
+    </div>
+  </div>
+
+<script>
+lucide.createIcons();
+
+/* ============================================================
+   LINK CONFIGURATION
+   ============================================================ */
+const LINKS = {
+    facebook: "https://web.facebook.com/profile.php?id=61584537971883",
+    whatsapp: "https://wa.me/0881199024", 
+    email: "mailto:whatsappinstaller0707@gmail.com?subject=Service Inquiry",
+    sports: "https://www.plus.fifa.com/en/",
+    movies: "https://moviebox.ph/",
+    games: "https://www.4fnet.org/",
+    books: "https://oceanofpdf.com/",
+    music: "https://freefy.app/" // You can change this to your music link
+};
+
+function cardAction(name) {
+    switch(name) {
+        case 'Graphics':
+        case 'Logos':
+            window.open(LINKS.facebook, '_blank');
+            break;
+
+        case 'Web Dev':
+        case 'App Dev':
+        case 'Recovery':
+        case 'WhatsApp Unbanning':
+        case 'Account Recovery':
+        case 'Security Boosting':
+        case 'WhatsApp':
+            window.open(LINKS.whatsapp, '_blank');
+            break;
+
+        case 'Watch Sports': window.open(LINKS.sports, '_blank'); break;
+        case 'Watch Movies': window.open(LINKS.movies, '_blank'); break;
+        case 'Download Games': window.open(LINKS.games, '_blank'); break;
+        case 'Download Books': window.open(LINKS.books, '_blank'); break;
+        case 'Stream Music': window.open(LINKS.music, '_blank'); break;
+        case 'Email': window.open(LINKS.email, '_self'); break;
+
+        default:
+            console.log("No link set for: " + name);
+    }
+}
+
+/* ============================================================
+   APP FUNCTIONALITY
+   ============================================================ */
+let balance = parseFloat(localStorage.getItem('jayTechBalance')) || 0;
+document.getElementById('totalDisplay').innerText = balance.toFixed(2);
+
+function openModal(id) { 
+    document.querySelectorAll('.overlay').forEach(o => o.classList.remove('active'));
+    document.getElementById(id).classList.add("active"); 
+}
+
+function closeOverlay(event) { if (event.target.classList.contains("overlay")) event.target.classList.remove("active"); }
+
+function setActiveNav(el, type) {
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+    if(type === 'services') openModal('servicesOverlay');
+}
+
+function addTransaction() {
+    const amt = parseFloat(document.getElementById('finAmount').value);
+    const type = document.getElementById('finType').value;
+    if (isNaN(amt) || amt <= 0) return alert("Enter valid amount");
+    balance = (type === "income") ? balance + amt : balance - amt;
+    localStorage.setItem('jayTechBalance', balance);
+    document.getElementById('totalDisplay').innerText = balance.toFixed(2);
+    document.getElementById('finAmount').value = "";
+}
+
+function searchCards(query) {
+    query = query.toLowerCase();
+    document.querySelectorAll(".card").forEach(card => {
+        card.style.display = card.innerText.toLowerCase().includes(query) ? "flex" : "none";
+    });
+}
+
+document.getElementById("themeToggle").onchange = (e) => {
+    document.body.classList.toggle("light", e.target.checked);
+};
+</script>
+
+</body>
+</html>
