@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#3498db">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JAY-TECH | Professional Services</title>
@@ -177,6 +179,11 @@
       <div class="card" onclick="cardAction('Recovery')"><i data-lucide="refresh-cw"></i>Recovery</div>
       <div class="card" onclick="cardAction('App Dev')"><i data-lucide="layout"></i>App Dev</div>
       <div class="card" onclick="openModal('financeOverlay')"><i data-lucide="wallet"></i>Ledger</div>
+</div> 
+    
+    <div class="service-btn support" style="margin-top: 15px; border-left: 4px solid var(--primary);" onclick="alert('To Install JAY-TECH: \n\nOn Android: Tap the 3 dots (⋮) and select [Install App] or [Add to Home Screen]. \n\nOn iPhone: Tap the [Share] icon (box with arrow) and select [Add to Home Screen].')">
+      <i data-lucide="download-cloud"></i> 
+      <span style="flex:1;">Install JAY-TECH App</span>
     </div>
 
     <div class="bottom-nav">
@@ -351,4 +358,5 @@ document.getElementById("themeToggle").onchange = (e) => {
 
 </body>
 </html>
+
 
