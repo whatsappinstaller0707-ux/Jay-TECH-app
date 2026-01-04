@@ -355,8 +355,13 @@ document.getElementById("themeToggle").onchange = (e) => {
     document.body.classList.toggle("light", e.target.checked);
 };
 </script>
-
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+  }
+</script>
 </body>
 </html>
+
 
 
